@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
 
         if (playerControlled)
         {
+            velocity = Vector2.zero;
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Jump();
@@ -138,6 +140,31 @@ public class Player : MonoBehaviour
             Debug.DrawRay(transform.position, Vector2.left * viewDistance, Color.red);
         }
 
+        if (Physics2D.Raycast(transform.position, Vector2.up + Vector2.right, viewDistance))
+        {
+            dir.Add(Physics2D.Raycast(transform.position, Vector2.up + Vector2.right, viewDistance).distance);
+            isD.Add(Physics2D.Raycast(transform.position, Vector2.up + Vector2.right, viewDistance).collider.gameObject.CompareTag("DeadZone"));
+            Debug.DrawRay(transform.position, (Vector2.up + Vector2.right) * viewDistance, Color.green);
+        }
+        else
+        {
+            dir.Add(-1);
+            isD.Add(false);
+            Debug.DrawRay(transform.position, (Vector2.up + Vector2.right) * viewDistance, Color.red);
+        }
+
+        if (Physics2D.Raycast(transform.position, Vector2.up + Vector2.left, viewDistance))
+        {
+            dir.Add(Physics2D.Raycast(transform.position, Vector2.up + Vector2.left, viewDistance).distance);
+            isD.Add(Physics2D.Raycast(transform.position, Vector2.up + Vector2.left, viewDistance).collider.gameObject.CompareTag("DeadZone"));
+            Debug.DrawRay(transform.position, (Vector2.up + Vector2.left) * viewDistance, Color.green);
+        }
+        else
+        {
+            dir.Add(-1);
+            isD.Add(false);
+            Debug.DrawRay(transform.position, (Vector2.up + Vector2.left) * viewDistance, Color.red);
+        }
 
         return (dir.ToArray(), isD.ToArray());
     }

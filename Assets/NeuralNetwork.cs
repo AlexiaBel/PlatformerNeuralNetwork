@@ -37,9 +37,9 @@ namespace NeuralNetwork
         {
             List<float> inputsTrimmed = new List<float>();
 
-            if (inputs.Length < MaxInputs) { Debug.LogWarning("Passed inputs are smaller than the max allowed inputs in Netowrk. Reduce the first layer node count for better results."); }
+            if (inputs.Length < MaxInputs) { Debug.LogWarning("Passed inputs are smaller than the max allowed inputs in Netowrk. Reduce the first layer node count for better results. Max inputs = " + MaxInputs + " Passed inputs = " + inputs.Length); }
 
-            if (inputs.Length > MaxInputs) { Debug.LogWarning("Passed inputs are bigger than the max allowed inputs in Netowrk. Some inputs will be ignored."); }
+            if (inputs.Length > MaxInputs) { Debug.LogWarning("Passed inputs are bigger than the max allowed inputs in Netowrk. Some inputs will be ignored. Max inputs = " + MaxInputs + " Passed inputs = " + inputs.Length); }
 
             for (int i = 0; i < MaxInputs; i++)
             {

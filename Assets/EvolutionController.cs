@@ -7,7 +7,7 @@ public class EvolutionController : MonoBehaviour
     [Range(0, 5)]
     public float simulationSpeed = 1;
     public GameObject p_Agent;
-    public int[] neuralNetworkShape = { 16, 32, 32, 2 };
+    public int[] neuralNetworkShape = { 18, 32, 32, 32, 2 };
     public int agentsAmount;
     public int agentsAllowedToReproduceAmount;
     [Range(0, 1)]
@@ -33,8 +33,17 @@ public class EvolutionController : MonoBehaviour
 
     List<GameObject> agents = new List<GameObject>();
 
-    void Start()
+    bool simulationStarted;
+
+    private void Update()
     {
+        Time.timeScale = simulationSpeed;
+    }
+
+    public void StartSimulation()
+    {
+        if (simulationStarted) { return; }
+
         LoadRandomMap();
 
         for (int i = 0; i < agentsAmount; i++)
@@ -54,17 +63,26 @@ public class EvolutionController : MonoBehaviour
 
         StartCoroutine(StartGeneration());
         StartCoroutine(UpdateVisualization());
+
+        simulationStarted = true;
     }
 
-    private void Update()
+    public void StopSimulation()
     {
-        Time.timeScale = simulationSpeed;
+        if (!simulationStarted) { return; }
+
+        StopAllCoroutines();
+
+        for (int i = 0; i < agents.Count; i++)
+        {
+            Destroy(agents[i]);
+        }
+
+        simulationStarted = false;
     }
 
-    bool allActive;
     void ShowAll()
     {
-        allActive = true;
         for(int i = 0; i < agents.Count; i++)
         {
             if (agents[i] == null) { continue; }
@@ -78,7 +96,6 @@ public class EvolutionController : MonoBehaviour
 
     void HideAll()
     {
-        allActive = false;
         for (int i = 0; i < agents.Count; i++)
         {
             if (agents[i] == null) { continue; }
